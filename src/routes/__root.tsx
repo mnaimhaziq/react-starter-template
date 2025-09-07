@@ -2,7 +2,7 @@ import { Outlet, createRootRoute, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { ThemeInit } from "../../.flowbite-react/init";
 import NotFound from "@/components/shared/NotFound";
-import { NavigationBar } from "@/components/shared/navigations/navbar";
+import { NavigationBar } from "@/components/shared/navigations/Navbar";
 
 export const Route = createRootRoute({
   component: RootComponent,
