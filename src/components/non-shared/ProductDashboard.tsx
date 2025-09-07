@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge, Button, Dropdown } from "flowbite-react";
 import ReusableTable from "../reusable/reusabletable";
+import { useNavigate } from "@tanstack/react-router";
 
 // Mock product data (replace with your actual data source)
 const mockProducts = [
@@ -170,6 +171,7 @@ interface Product {
 
 const ProductDashboard: React.FC = () => {
   const data = useMemo(() => mockProducts, []);
+  const navigate = useNavigate();
 
   const columns = useMemo<ColumnDef<Product>[]>(
     () => [
@@ -303,7 +305,7 @@ const ProductDashboard: React.FC = () => {
       globalFilterPlaceholder="Search products..."
       defaultPageSize={10}
       pageSizeOptions={[10, 25, 50]}
-      onAddClick={() => alert("Add product clicked!")}
+      onAddClick={() => navigate({to: '/management/clients/add'})}
       addButtonText="Add Product"
     />
   );
