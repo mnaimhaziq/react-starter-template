@@ -19,7 +19,8 @@ import { Route as privateSettingsRouteImport } from './routes/(private)/settings
 import { Route as privateProfileRouteImport } from './routes/(private)/profile'
 import { Route as privateOverviewDashboardRouteImport } from './routes/(private)/overview/dashboard'
 import { Route as privateManagementTicketsRouteImport } from './routes/(private)/management/tickets'
-import { Route as privateManagementClientsRouteImport } from './routes/(private)/management/clients'
+import { Route as privateManagementClientsIndexRouteImport } from './routes/(private)/management/clients/index'
+import { Route as privateManagementClientsAddRouteImport } from './routes/(private)/management/clients/add'
 
 const TranslationRoute = TranslationRouteImport.update({
   id: '/translation',
@@ -72,10 +73,16 @@ const privateManagementTicketsRoute =
     path: '/management/tickets',
     getParentRoute: () => privateRouteRoute,
   } as any)
-const privateManagementClientsRoute =
-  privateManagementClientsRouteImport.update({
-    id: '/management/clients',
-    path: '/management/clients',
+const privateManagementClientsIndexRoute =
+  privateManagementClientsIndexRouteImport.update({
+    id: '/management/clients/',
+    path: '/management/clients/',
+    getParentRoute: () => privateRouteRoute,
+  } as any)
+const privateManagementClientsAddRoute =
+  privateManagementClientsAddRouteImport.update({
+    id: '/management/clients/add',
+    path: '/management/clients/add',
     getParentRoute: () => privateRouteRoute,
   } as any)
 
@@ -87,9 +94,10 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof publicPricingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
-  '/management/clients': typeof privateManagementClientsRoute
   '/management/tickets': typeof privateManagementTicketsRoute
   '/overview/dashboard': typeof privateOverviewDashboardRoute
+  '/management/clients/add': typeof privateManagementClientsAddRoute
+  '/management/clients': typeof privateManagementClientsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
@@ -99,9 +107,10 @@ export interface FileRoutesByTo {
   '/pricing': typeof publicPricingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
-  '/management/clients': typeof privateManagementClientsRoute
   '/management/tickets': typeof privateManagementTicketsRoute
   '/overview/dashboard': typeof privateOverviewDashboardRoute
+  '/management/clients/add': typeof privateManagementClientsAddRoute
+  '/management/clients': typeof privateManagementClientsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,9 +122,10 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/(public)/': typeof publicIndexRoute
-  '/(private)/management/clients': typeof privateManagementClientsRoute
   '/(private)/management/tickets': typeof privateManagementTicketsRoute
   '/(private)/overview/dashboard': typeof privateOverviewDashboardRoute
+  '/(private)/management/clients/add': typeof privateManagementClientsAddRoute
+  '/(private)/management/clients/': typeof privateManagementClientsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,9 +137,10 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/auth/login'
     | '/auth/register'
-    | '/management/clients'
     | '/management/tickets'
     | '/overview/dashboard'
+    | '/management/clients/add'
+    | '/management/clients'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,9 +150,10 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/auth/login'
     | '/auth/register'
-    | '/management/clients'
     | '/management/tickets'
     | '/overview/dashboard'
+    | '/management/clients/add'
+    | '/management/clients'
   id:
     | '__root__'
     | '/(private)'
@@ -152,9 +164,10 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/(public)/'
-    | '/(private)/management/clients'
     | '/(private)/management/tickets'
     | '/(private)/overview/dashboard'
+    | '/(private)/management/clients/add'
+    | '/(private)/management/clients/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -238,11 +251,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateManagementTicketsRouteImport
       parentRoute: typeof privateRouteRoute
     }
-    '/(private)/management/clients': {
-      id: '/(private)/management/clients'
+    '/(private)/management/clients/': {
+      id: '/(private)/management/clients/'
       path: '/management/clients'
       fullPath: '/management/clients'
-      preLoaderRoute: typeof privateManagementClientsRouteImport
+      preLoaderRoute: typeof privateManagementClientsIndexRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
+    '/(private)/management/clients/add': {
+      id: '/(private)/management/clients/add'
+      path: '/management/clients/add'
+      fullPath: '/management/clients/add'
+      preLoaderRoute: typeof privateManagementClientsAddRouteImport
       parentRoute: typeof privateRouteRoute
     }
   }
@@ -251,17 +271,19 @@ declare module '@tanstack/react-router' {
 interface privateRouteRouteChildren {
   privateProfileRoute: typeof privateProfileRoute
   privateSettingsRoute: typeof privateSettingsRoute
-  privateManagementClientsRoute: typeof privateManagementClientsRoute
   privateManagementTicketsRoute: typeof privateManagementTicketsRoute
   privateOverviewDashboardRoute: typeof privateOverviewDashboardRoute
+  privateManagementClientsAddRoute: typeof privateManagementClientsAddRoute
+  privateManagementClientsIndexRoute: typeof privateManagementClientsIndexRoute
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
   privateProfileRoute: privateProfileRoute,
   privateSettingsRoute: privateSettingsRoute,
-  privateManagementClientsRoute: privateManagementClientsRoute,
   privateManagementTicketsRoute: privateManagementTicketsRoute,
   privateOverviewDashboardRoute: privateOverviewDashboardRoute,
+  privateManagementClientsAddRoute: privateManagementClientsAddRoute,
+  privateManagementClientsIndexRoute: privateManagementClientsIndexRoute,
 }
 
 const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(

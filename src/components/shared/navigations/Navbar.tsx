@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { DarkThemeToggle } from "flowbite-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 const navItems = [
   { name: "Home", to: "/", active: true },
@@ -13,6 +13,7 @@ const navItems = [
 
 export function NavigationBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -32,9 +33,9 @@ export function NavigationBar() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Link to="/" className="flex items-center">
-              <img src="/favicon.svg" className="mr-2 h-8 w-8" alt="Logo" />
+              <img src="/flowbite.svg" className="mr-2 h-8 w-8" alt="Logo" />
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                MyBrand
+                Saasify
               </span>
             </Link>
           </motion.div>
@@ -66,17 +67,19 @@ export function NavigationBar() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={()=>{navigate({to: '/auth/login'})}}
               className="hidden rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 md:block"
             >
-              Get Started
+              Sign In
             </motion.button>
-            <motion.div
+             <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               <DarkThemeToggle />
             </motion.div>
+           
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -125,7 +128,7 @@ export function NavigationBar() {
                 className="w-full rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
                 onClick={toggleMenu}
               >
-                Get Started
+                Login
               </motion.button>
             </div>
           </motion.div>

@@ -9,13 +9,13 @@ import {
 } from "react-icons/hi";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineSubdirectoryArrowRight } from "react-icons/md";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 import { useNavigationStore } from "@/store/navigation.store";
-import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants/menuItems.constant";
 
 export default function CollapsibleSidebar() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const {
     setPath,
     isCollapsed,
@@ -33,7 +33,7 @@ export default function CollapsibleSidebar() {
 
   return (
     <aside
-      className={`fixed top-0 left-0 z-10 h-full border-r border-gray-200 bg-gray-100 shadow-xl transition-[width] duration-300 ease-in-out dark:border-gray-700 dark:bg-black ${
+      className={`fixed top-0 left-0 z-99 h-full border-r border-gray-200 bg-gray-100 shadow-xl transition-[width] duration-300 ease-in-out dark:border-gray-700 dark:bg-black ${
         isCollapsed ? "w-14" : "w-64"
       }`}
     >
@@ -41,7 +41,7 @@ export default function CollapsibleSidebar() {
       <div className="flex items-center justify-between px-3 pt-3 pb-5">
         {!isCollapsed && (
           <h1 className="text-base font-bold tracking-tight text-gray-800 dark:text-gray-100">
-            Kravio
+            Saasify
           </h1>
         )}
         <button
@@ -103,7 +103,11 @@ export default function CollapsibleSidebar() {
                     <>
                       <button
                         onClick={() => toggleSubmenu(item.name)}
-                        className="cursor-pointer flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-xs font-medium text-gray-700 transition-all hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                        className={`cursor-pointer flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-xs font-medium text-gray-700 transition-all hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 ${
+                          item.children.some((sub) => sub.href === pathname)
+                            ? "bg-gray-200 dark:bg-gray-700"
+                            : ""
+                        }`}
                       >
                         <div className="flex items-center gap-2">
                           {item.icon && <item.icon className="w-4 h-4" />}
@@ -131,7 +135,11 @@ export default function CollapsibleSidebar() {
                                 <MdOutlineSubdirectoryArrowRight className="h-4 w-4 text-gray-400" />
                                 <button
                                   onClick={() => handleNav(sub.href)}
-                                  className="rounded-md px-2 py-1.5 text-left text-xs text-gray-600 transition-all hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                                  className={`rounded-md px-2 py-1.5 text-left text-xs transition-all hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white ${
+                                    sub.href === pathname
+                                      ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                                      : "text-gray-600"
+                                  }`}
                                 >
                                   {sub.name}
                                 </button>
@@ -144,7 +152,11 @@ export default function CollapsibleSidebar() {
                   ) : (
                     <button
                       onClick={() => handleNav(item.href!)}
-                      className="cursor-pointer flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-xs font-medium text-gray-700 transition-all hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                      className={`cursor-pointer flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-xs font-medium transition-all hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 ${
+                        item.href === pathname
+                          ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                          : "text-gray-700"
+                      }`}
                     >
                       {item.icon && <item.icon className="h-4 w-4" />}
                       {!isCollapsed && <span>{item.name}</span>}
@@ -198,7 +210,11 @@ export default function CollapsibleSidebar() {
                 <li>
                   <button
                     onClick={() => handleNav("/profile")}
-                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                    className={`flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      pathname === "/profile"
+                        ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
                   >
                     <HiOutlineUser className="h-3 w-3" /> Profile
                   </button>
@@ -206,7 +222,11 @@ export default function CollapsibleSidebar() {
                 <li>
                   <button
                     onClick={() => navigate({ to: "/" })}
-                    className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className={`flex w-full items-center gap-2 px-3 py-1.5 text-xs hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      pathname === "/"
+                        ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                        : "text-red-600"
+                    }`}
                   >
                     <HiOutlineLogout className="h-3 w-3" /> Logout
                   </button>
