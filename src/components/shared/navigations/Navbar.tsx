@@ -9,7 +9,6 @@ const navItems = [
   { name: "About", to: "/about" },
   { name: "Services", to: "/services" },
   { name: "Pricing", to: "/pricing" },
-  { name: "flowbite", to: "/flowbite" },
 ];
 
 export function NavigationBar() {

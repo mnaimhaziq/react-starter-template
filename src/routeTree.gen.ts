@@ -9,30 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UserRouteImport } from './routes/user'
 import { Route as TranslationRouteImport } from './routes/translation'
-import { Route as TestRouteImport } from './routes/test'
-import { Route as FlowbiteRouteImport } from './routes/flowbite'
+import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as privateOverviewDashboardRouteImport } from './routes/(private)/overview/dashboard'
+import { Route as privateManagementTicketsRouteImport } from './routes/(private)/management/tickets'
+import { Route as privateManagementClientsRouteImport } from './routes/(private)/management/clients'
 
-const UserRoute = UserRouteImport.update({
-  id: '/user',
-  path: '/user',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TranslationRoute = TranslationRouteImport.update({
   id: '/translation',
   path: '/translation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TestRoute = TestRouteImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FlowbiteRoute = FlowbiteRouteImport.update({
-  id: '/flowbite',
-  path: '/flowbite',
+const privateRouteRoute = privateRouteRouteImport.update({
+  id: '/(private)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -40,54 +32,105 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const privateOverviewDashboardRoute =
+  privateOverviewDashboardRouteImport.update({
+    id: '/overview/dashboard',
+    path: '/overview/dashboard',
+    getParentRoute: () => privateRouteRoute,
+  } as any)
+const privateManagementTicketsRoute =
+  privateManagementTicketsRouteImport.update({
+    id: '/management/tickets',
+    path: '/management/tickets',
+    getParentRoute: () => privateRouteRoute,
+  } as any)
+const privateManagementClientsRoute =
+  privateManagementClientsRouteImport.update({
+    id: '/management/clients',
+    path: '/management/clients',
+    getParentRoute: () => privateRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/flowbite': typeof FlowbiteRoute
-  '/test': typeof TestRoute
+  '/': typeof privateRouteRouteWithChildren
   '/translation': typeof TranslationRoute
-  '/user': typeof UserRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/management/clients': typeof privateManagementClientsRoute
+  '/management/tickets': typeof privateManagementTicketsRoute
+  '/overview/dashboard': typeof privateOverviewDashboardRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/flowbite': typeof FlowbiteRoute
-  '/test': typeof TestRoute
+  '/': typeof privateRouteRouteWithChildren
   '/translation': typeof TranslationRoute
-  '/user': typeof UserRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/management/clients': typeof privateManagementClientsRoute
+  '/management/tickets': typeof privateManagementTicketsRoute
+  '/overview/dashboard': typeof privateOverviewDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/flowbite': typeof FlowbiteRoute
-  '/test': typeof TestRoute
+  '/(private)': typeof privateRouteRouteWithChildren
   '/translation': typeof TranslationRoute
-  '/user': typeof UserRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/(private)/management/clients': typeof privateManagementClientsRoute
+  '/(private)/management/tickets': typeof privateManagementTicketsRoute
+  '/(private)/overview/dashboard': typeof privateOverviewDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/flowbite' | '/test' | '/translation' | '/user'
+  fullPaths:
+    | '/'
+    | '/translation'
+    | '/auth/login'
+    | '/auth/register'
+    | '/management/clients'
+    | '/management/tickets'
+    | '/overview/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/flowbite' | '/test' | '/translation' | '/user'
-  id: '__root__' | '/' | '/flowbite' | '/test' | '/translation' | '/user'
+  to:
+    | '/'
+    | '/translation'
+    | '/auth/login'
+    | '/auth/register'
+    | '/management/clients'
+    | '/management/tickets'
+    | '/overview/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/(private)'
+    | '/translation'
+    | '/auth/login'
+    | '/auth/register'
+    | '/(private)/management/clients'
+    | '/(private)/management/tickets'
+    | '/(private)/overview/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FlowbiteRoute: typeof FlowbiteRoute
-  TestRoute: typeof TestRoute
+  privateRouteRoute: typeof privateRouteRouteWithChildren
   TranslationRoute: typeof TranslationRoute
-  UserRoute: typeof UserRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/user': {
-      id: '/user'
-      path: '/user'
-      fullPath: '/user'
-      preLoaderRoute: typeof UserRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/translation': {
       id: '/translation'
       path: '/translation'
@@ -95,18 +138,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TranslationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/flowbite': {
-      id: '/flowbite'
-      path: '/flowbite'
-      fullPath: '/flowbite'
-      preLoaderRoute: typeof FlowbiteRouteImport
+    '/(private)': {
+      id: '/(private)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof privateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -116,15 +152,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(private)/overview/dashboard': {
+      id: '/(private)/overview/dashboard'
+      path: '/overview/dashboard'
+      fullPath: '/overview/dashboard'
+      preLoaderRoute: typeof privateOverviewDashboardRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
+    '/(private)/management/tickets': {
+      id: '/(private)/management/tickets'
+      path: '/management/tickets'
+      fullPath: '/management/tickets'
+      preLoaderRoute: typeof privateManagementTicketsRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
+    '/(private)/management/clients': {
+      id: '/(private)/management/clients'
+      path: '/management/clients'
+      fullPath: '/management/clients'
+      preLoaderRoute: typeof privateManagementClientsRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
   }
 }
 
+interface privateRouteRouteChildren {
+  privateManagementClientsRoute: typeof privateManagementClientsRoute
+  privateManagementTicketsRoute: typeof privateManagementTicketsRoute
+  privateOverviewDashboardRoute: typeof privateOverviewDashboardRoute
+}
+
+const privateRouteRouteChildren: privateRouteRouteChildren = {
+  privateManagementClientsRoute: privateManagementClientsRoute,
+  privateManagementTicketsRoute: privateManagementTicketsRoute,
+  privateOverviewDashboardRoute: privateOverviewDashboardRoute,
+}
+
+const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
+  privateRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FlowbiteRoute: FlowbiteRoute,
-  TestRoute: TestRoute,
+  privateRouteRoute: privateRouteRouteWithChildren,
   TranslationRoute: TranslationRoute,
-  UserRoute: UserRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
