@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TranslationRouteImport } from './routes/translation'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as publicPricingRouteImport } from './routes/(public)/pricing'
+import { Route as privateSettingsRouteImport } from './routes/(private)/settings'
+import { Route as privateProfileRouteImport } from './routes/(private)/profile'
 import { Route as privateOverviewDashboardRouteImport } from './routes/(private)/overview/dashboard'
 import { Route as privateManagementTicketsRouteImport } from './routes/(private)/management/tickets'
 import { Route as privateManagementClientsRouteImport } from './routes/(private)/management/clients'
@@ -27,8 +30,8 @@ const privateRouteRoute = privateRouteRouteImport.update({
   id: '/(private)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const publicIndexRoute = publicIndexRouteImport.update({
+  id: '/(public)/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -41,6 +44,21 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const publicPricingRoute = publicPricingRouteImport.update({
+  id: '/(public)/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const privateSettingsRoute = privateSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => privateRouteRoute,
+} as any)
+const privateProfileRoute = privateProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => privateRouteRoute,
 } as any)
 const privateOverviewDashboardRoute =
   privateOverviewDashboardRouteImport.update({
@@ -62,8 +80,11 @@ const privateManagementClientsRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof privateRouteRouteWithChildren
+  '/': typeof publicIndexRoute
   '/translation': typeof TranslationRoute
+  '/profile': typeof privateProfileRoute
+  '/settings': typeof privateSettingsRoute
+  '/pricing': typeof publicPricingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/management/clients': typeof privateManagementClientsRoute
@@ -71,8 +92,11 @@ export interface FileRoutesByFullPath {
   '/overview/dashboard': typeof privateOverviewDashboardRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof privateRouteRouteWithChildren
+  '/': typeof publicIndexRoute
   '/translation': typeof TranslationRoute
+  '/profile': typeof privateProfileRoute
+  '/settings': typeof privateSettingsRoute
+  '/pricing': typeof publicPricingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/management/clients': typeof privateManagementClientsRoute
@@ -81,11 +105,14 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/(private)': typeof privateRouteRouteWithChildren
   '/translation': typeof TranslationRoute
+  '/(private)/profile': typeof privateProfileRoute
+  '/(private)/settings': typeof privateSettingsRoute
+  '/(public)/pricing': typeof publicPricingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/(public)/': typeof publicIndexRoute
   '/(private)/management/clients': typeof privateManagementClientsRoute
   '/(private)/management/tickets': typeof privateManagementTicketsRoute
   '/(private)/overview/dashboard': typeof privateOverviewDashboardRoute
@@ -95,6 +122,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/translation'
+    | '/profile'
+    | '/settings'
+    | '/pricing'
     | '/auth/login'
     | '/auth/register'
     | '/management/clients'
@@ -104,6 +134,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/translation'
+    | '/profile'
+    | '/settings'
+    | '/pricing'
     | '/auth/login'
     | '/auth/register'
     | '/management/clients'
@@ -111,22 +144,26 @@ export interface FileRouteTypes {
     | '/overview/dashboard'
   id:
     | '__root__'
-    | '/'
     | '/(private)'
     | '/translation'
+    | '/(private)/profile'
+    | '/(private)/settings'
+    | '/(public)/pricing'
     | '/auth/login'
     | '/auth/register'
+    | '/(public)/'
     | '/(private)/management/clients'
     | '/(private)/management/tickets'
     | '/(private)/overview/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   privateRouteRoute: typeof privateRouteRouteWithChildren
   TranslationRoute: typeof TranslationRoute
+  publicPricingRoute: typeof publicPricingRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  publicIndexRoute: typeof publicIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -145,11 +182,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/(public)/': {
+      id: '/(public)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/register': {
@@ -165,6 +202,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(public)/pricing': {
+      id: '/(public)/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof publicPricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(private)/settings': {
+      id: '/(private)/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof privateSettingsRouteImport
+      parentRoute: typeof privateRouteRoute
+    }
+    '/(private)/profile': {
+      id: '/(private)/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof privateProfileRouteImport
+      parentRoute: typeof privateRouteRoute
     }
     '/(private)/overview/dashboard': {
       id: '/(private)/overview/dashboard'
@@ -191,12 +249,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface privateRouteRouteChildren {
+  privateProfileRoute: typeof privateProfileRoute
+  privateSettingsRoute: typeof privateSettingsRoute
   privateManagementClientsRoute: typeof privateManagementClientsRoute
   privateManagementTicketsRoute: typeof privateManagementTicketsRoute
   privateOverviewDashboardRoute: typeof privateOverviewDashboardRoute
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
+  privateProfileRoute: privateProfileRoute,
+  privateSettingsRoute: privateSettingsRoute,
   privateManagementClientsRoute: privateManagementClientsRoute,
   privateManagementTicketsRoute: privateManagementTicketsRoute,
   privateOverviewDashboardRoute: privateOverviewDashboardRoute,
@@ -207,11 +269,12 @@ const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   privateRouteRoute: privateRouteRouteWithChildren,
   TranslationRoute: TranslationRoute,
+  publicPricingRoute: publicPricingRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  publicIndexRoute: publicIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

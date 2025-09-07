@@ -5,6 +5,34 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Sleek custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* thin */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* invisible track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.6); /* gray-400/60 */
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(107, 114, 128, 0.8); /* darker on hover */
+}
+
+/* Dark mode */
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(75, 85, 99, 0.6); /* gray-600/60 */
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.8); /* lighter in dark */
+}
+
+
 @theme inline {
 
   --radius-sm: calc(var(--radius) - 4px);

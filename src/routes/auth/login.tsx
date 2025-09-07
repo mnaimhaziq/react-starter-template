@@ -1,19 +1,23 @@
-import { z } from 'zod';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { motion } from 'framer-motion';
-import ReusableForm, { type FormField } from '@/components/ui/reusableform';
+import { z } from "zod";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import ReusableForm, {
+  type FormField,
+} from "@/components/reusable/reusableform";
 
 // Schema for login form
 const loginSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
 });
 
 function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = async (data: z.infer<typeof loginSchema>) => {
-    console.log('Login data:', data);
+    console.log("Login data:", data);
     // TODO: Replace this with actual API call & auth validation
     // Example:
     // const response = await axios.post('/api/login', data);
@@ -22,22 +26,32 @@ function LoginPage() {
     // }
 
     // For now, just redirect after "login"
-    navigate({ to: '/overview/dashboard' });
+    navigate({ to: "/overview/dashboard" });
   };
 
   const loginFields = [
-  { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter your email' },
-  { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter your password' },
-] as const satisfies FormField[];
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "Enter your email",
+    },
+    {
+      name: "password",
+      label: "Password",
+      type: "password",
+      placeholder: "Enter your password",
+    },
+  ] as const satisfies FormField[];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-black transition-colors duration-500">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 transition-colors duration-500 dark:from-gray-900 dark:to-black">
       {/* Glassmorphic Card with animation */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
-        className="w-full max-w-md rounded-2xl bg-white/80 dark:bg-gray-900/70 p-8 shadow-xl backdrop-blur-xl border border-gray-200/40 dark:border-gray-700/40"
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full max-w-md rounded-2xl border border-gray-200/40 bg-white/80 p-8 shadow-xl backdrop-blur-xl dark:border-gray-700/40 dark:bg-gray-900/70"
       >
         {/* Title with animation */}
         <motion.h2
@@ -66,10 +80,10 @@ function LoginPage() {
           transition={{ delay: 0.5 }}
           className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400"
         >
-          Don&apos;t have an account?{' '}
+          Don&apos;t have an account?{" "}
           <a
             href="/auth/register"
-            className="text-blue-600 dark:text-blue-400 font-medium hover:underline transition-colors"
+            className="font-medium text-blue-600 transition-colors hover:underline dark:text-blue-400"
           >
             Register
           </a>
@@ -80,6 +94,6 @@ function LoginPage() {
 }
 
 // Define route
-export const Route = createFileRoute('/auth/login')({
+export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
 });

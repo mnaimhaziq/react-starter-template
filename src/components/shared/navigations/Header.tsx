@@ -4,17 +4,19 @@ import React, { useMemo } from "react";
 import { HiBell, HiCog, HiHome } from "react-icons/hi";
 import { DarkThemeToggle } from "flowbite-react";
 import { useNavigationStore } from "@/store/navigation.store";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
+import Notification from "@/components/non-shared/Notification";
 
 const Header = () => {
-  const path = useNavigationStore((s) => s.path);
+  const location = useRouterState().location;
+  const path = location.pathname;
+  const navigate = useNavigate();
 
-  // Convert "/(private)/overview/dashboard" -> ["Overview", "Dashboard"]
   const breadcrumbs = useMemo(() => {
-    if (!path) return ["Overview", "Dashboard"]; // default
     return path
       .split("/")
       .filter(Boolean)
-      .filter((seg) => seg !== "(private)") // remove private prefix
+      .filter((seg) => seg !== "(private)")
       .map((seg) => seg.charAt(0).toUpperCase() + seg.slice(1));
   }, [path]);
 
@@ -41,12 +43,12 @@ const Header = () => {
 
       {/* Right side */}
       <div className="flex items-center gap-4">
-        <button className="relative rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-          <HiBell className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500"></span>
-        </button>
+         <Notification /> 
         <DarkThemeToggle />
-        <button className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+        <button
+          onClick={() => navigate({to: '/settings'})}
+          className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
           <HiCog className="h-5 w-5 text-gray-600 dark:text-gray-300" />
         </button>
       </div>

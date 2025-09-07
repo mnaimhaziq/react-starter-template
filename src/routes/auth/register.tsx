@@ -1,45 +1,61 @@
-import { z } from 'zod';
-import { createFileRoute } from '@tanstack/react-router';
-import { motion } from 'framer-motion';
-import ReusableForm, { type FormField } from '@/components/ui/reusableform';
+import { z } from "zod";
+import { createFileRoute } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import ReusableForm, {
+  type FormField,
+} from "@/components/reusable/reusableform";
 
 // Define the schema for registration form using Zod
 const registerSchema = z
   .object({
-    email: z.string().email({ message: 'Invalid email address' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-    confirmPassword: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ['confirmPassword'],
+    path: ["confirmPassword"],
   });
 
 function RegisterPage() {
   const handleRegister = async (data: z.infer<typeof registerSchema>) => {
-    console.log('Registration data:', data);
+    console.log("Registration data:", data);
     // Example: await axios.post('/api/register', data);
   };
 
   const registerFields = [
-    { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter your email' },
-    { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter your password' },
     {
-      name: 'confirmPassword',
-      label: 'Confirm Password',
-      type: 'password',
-      placeholder: 'Confirm your password',
+      name: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "Enter your email",
     },
-  ] as const satisfies FormField[];;
+    {
+      name: "password",
+      label: "Password",
+      type: "password",
+      placeholder: "Enter your password",
+    },
+    {
+      name: "confirmPassword",
+      label: "Confirm Password",
+      type: "password",
+      placeholder: "Confirm your password",
+    },
+  ] as const satisfies FormField[];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-black transition-colors duration-500">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 transition-colors duration-500 dark:from-gray-900 dark:to-black">
       {/* Glassmorphism Card with Animation */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
-        className="w-full max-w-md rounded-2xl bg-white/80 dark:bg-gray-900/70 p-8 shadow-xl backdrop-blur-xl border border-gray-200/40 dark:border-gray-700/40"
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full max-w-md rounded-2xl border border-gray-200/40 bg-white/80 p-8 shadow-xl backdrop-blur-xl dark:border-gray-700/40 dark:bg-gray-900/70"
       >
         {/* Title Animation */}
         <motion.h2
@@ -68,10 +84,10 @@ function RegisterPage() {
           transition={{ delay: 0.5 }}
           className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400"
         >
-          Already have an account?{' '}
+          Already have an account?{" "}
           <a
             href="/auth/login"
-            className="text-purple-600 dark:text-purple-400 font-medium hover:underline transition-colors"
+            className="font-medium text-purple-600 transition-colors hover:underline dark:text-purple-400"
           >
             Login
           </a>
@@ -82,6 +98,6 @@ function RegisterPage() {
 }
 
 // Route Definition
-export const Route = createFileRoute('/auth/register')({
+export const Route = createFileRoute("/auth/register")({
   component: RegisterPage,
 });
