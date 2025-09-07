@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge, Button, Dropdown } from "flowbite-react";
-import ReusableTable from "../ui/reusabletable";
+import ReusableTable from "../reusable/reusabletable";
 
 // Mock product data (replace with your actual data source)
 const mockProducts = [

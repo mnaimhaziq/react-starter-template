@@ -1,20 +1,55 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  RadialBarChart,
+  RadialBar,
+  Legend,
+} from 'recharts'
 
 export const Route = createFileRoute('/(private)/overview/dashboard')({
   component: RouteComponent,
 })
 
+const ticketTrendData = [
+  { day: 'Mon', tickets: 200 },
+  { day: 'Tue', tickets: 300 },
+  { day: 'Wed', tickets: 250 },
+  { day: 'Thu', tickets: 400 },
+  { day: 'Fri', tickets: 280 },
+  { day: 'Sat', tickets: 350 },
+  { day: 'Sun', tickets: 500 },
+]
+
+const resolutionData = [
+  { name: '0-2h', value: 40 },
+  { name: '2-6h', value: 30 },
+  { name: '6-12h', value: 20 },
+  { name: '12h+', value: 10 },
+]
+
+const agentPerformance = [
+  { agent: 'John', resolved: 120 },
+  { agent: 'Sarah', resolved: 90 },
+  { agent: 'Ali', resolved: 140 },
+  { agent: 'Maya', resolved: 80 },
+]
+
 function RouteComponent() {
   return (
     <div className="flex h-screen w-full bg-gray-50 dark:bg-black rounded-2xl text-gray-900 dark:text-gray-100">
-    
-
-      {/* Main Content */}
-      <main className="flex-1 p-6 ">
+      <main className="flex-1 px-6 py-6 ">
         {/* Header */}
         <header className="mb-6">
-          <h2 className="text-2xl font-semibold">Hello, Achmad Hakim 👋</h2>
+          <h2 className="text-2xl font-semibold">Hello, Naim Haziq 👋</h2>
           <p className="text-gray-500 dark:text-gray-400">
             Here are the latest insights from your customer interactions.
           </p>
@@ -45,12 +80,53 @@ function RouteComponent() {
           ))}
         </section>
 
-        {/* Chart Placeholder */}
-        <section className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-4 shadow-sm mb-6">
-          <h3 className="text-sm font-medium text-gray-500 mb-2">Ticket Volume Trend</h3>
-          <div className="h-48 flex items-center justify-center text-gray-400 dark:text-gray-600">
-            📊 Chart goes here (use Recharts or Chart.js)
-          </div>
+        {/* Charts Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Line Chart */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-4 shadow-sm"
+          >
+            <h3 className="text-sm font-medium text-gray-500 mb-2">
+              Ticket Volume Trend
+            </h3>
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={ticketTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="tickets" stroke="#3b82f6" strokeWidth={2} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Bar Chart */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-4 shadow-sm"
+          >
+            <h3 className="text-sm font-medium text-gray-500 mb-2">
+              Agent Performance
+            </h3>
+            <div className="h-48">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={agentPerformance}>
+                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+                  <XAxis dataKey="agent" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="resolved" fill="#10b981" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+         
         </section>
 
         {/* Table */}
